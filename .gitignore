@@ -1,0 +1,38 @@
+# --- SQLite Specific ---
+# Ignore the database file itself (standard names)
+*.sqlite3
+*.sqlite
+*.db
+
+# Ignore SQLite temporary/journal files
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+
+# --- Python Specific ---
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.env
+.venv
+ENV/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# --- IDE/Editor Specific ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
