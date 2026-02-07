@@ -40,21 +40,35 @@ async def start(message: types.Message):
 
 @dp.message(Command("property"))
 async def property(message: types.Message):
-    # Get all pizza images from static folder
-    pizza_files = [
-        ("🍕 Pepperoni", "Pizza_Papperoni.jpeg"),
-        ("🍕 Barbecue", "Pizza_Barbecue.jpeg"),
-        ("🍕 Sea Delights", "Pizza_SeaDelights.jpeg"),
-        ("🍕 Alfredo", "Pizza_Alfredo.jpeg"),
-    ]
+    # Get all pizzas from PizzaFactory
+    pizzas = Models.PizzaFactory.get_all_pizzas()
+    
+    # Map pizza names to image files
+    pizza_images = {
+        "Papperoni": "Pizza_Papperoni.jpeg",
+        "Barbecue": "Pizza_Barbecue.jpeg",
+        "Sea Delights": "Pizza_SeaDelights.jpeg",
+        "Alfredo": "Pizza_Alfredo.jpeg",
+    }
     
     await message.answer("Here are our delicious pizzas! 🍕")
     
-    for pizza_name, filename in pizza_files:
-        file_path = os.path.join(STATIC_DIR, filename)
-        if os.path.exists(file_path):
-            photo = FSInputFile(file_path)
-            await message.answer_photo(photo, caption=pizza_name)
+    for pizza in pizzas:
+        # Build caption with pizza details
+        caption = (
+            f"🍕 <b>{pizza.name}</b>\n\n"
+            f"💰 <b>Price:</b> {pizza.price:,.0f} UZS\n"
+            f"🥖 <b>Dough:</b> {pizza.dough}\n"
+            f"🍅 <b>Sauce:</b> {pizza.sauce}\n"
+            f"🧀 <b>Toppings:</b> {', '.join(pizza.toppings)}"
+        )
+        
+        filename = pizza_images.get(pizza.name)
+        if filename:
+            file_path = os.path.join(STATIC_DIR, filename)
+            if os.path.exists(file_path):
+                photo = FSInputFile(file_path)
+                await message.answer_photo(photo, caption=caption, parse_mode="HTML")
 
 dp.include_router(Models.router)
 
