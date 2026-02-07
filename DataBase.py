@@ -48,11 +48,11 @@ class DataBase:
         logger.info(f"DataBase created successfully")
 
     def add_user(self, user_id: int, username: str = None, first_name: str = None, last_name: str = None):
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT OR IGNORE INTO users (user_id, username, first,name, last_name) VALUES (?, ?, ?, ?, ?) ",
+            "INSERT OR IGNORE INTO users (id, username, first_name, last_name) VALUES (?, ?, ?, ?)",
             (user_id, username, first_name, last_name)
         )
 
